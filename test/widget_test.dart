@@ -93,6 +93,8 @@ void main() {
             .onPressed,
         isNull,
       );
+      await tester.tap(find.byType(ElevatedButton).first);
+      await tester.pump();
       await tester.pump(const Duration(seconds: 2));
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
       expect(find.text('Welcome, Myles Miller!'), findsOneWidget);

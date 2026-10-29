@@ -6,7 +6,7 @@ A three-screen Flutter app for Activity 11b, extended from our Activity 10 form.
 
 Myles Miller (@ozemoya) and Eziz Bagshiyev (@ezizbagshiyev). Both undergraduate. Shared build only; no graduate extension.
 
-Eziz has been invited to the repository. Each member must explain a screen and submit the artifacts individually. The repository history records the actual author of each commit; no work is attributed to a teammate without evidence.
+Eziz has been invited to the repository. Each member must explain a screen and submit the artifacts individually. 
 
 ## Run
 
@@ -15,7 +15,7 @@ flutter pub get
 flutter run
 flutter analyze
 flutter test
-flutter test integration_test/registry_test.dart -d emulator-5554
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/registry_test.dart -d emulator-5554
 flutter build apk --release
 ```
 
@@ -54,3 +54,5 @@ Repository: https://github.com/ozemoya/incl11
 Submit the release APK, Ghost Hunt Word document and repository URL together. Each member also needs their own live explanation and individual upload. Do not submit a ZIP in place of these artifacts.
 
 A UI issue found during the emulator run was stale validation messages after correcting the fields. The form now starts revalidating edits after the first submit attempt, so old errors clear as the guest corrects them.
+
+Ghost Hunt responses: [Word document](docs/Miller_Myles_Activity11_GhostHunt.docx).

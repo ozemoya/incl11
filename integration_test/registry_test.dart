@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,10 +19,8 @@ void main() {
     await binding.convertFlutterSurfaceToImage();
     await tester.pump();
     Future<void> capture(String name) async {
-      final bytes = await binding.takeScreenshot(name);
-      final file = File('${Directory.systemTemp.path}/nightfall-$name.png');
-      await file.writeAsBytes(bytes);
-      debugPrint('EVIDENCE ${file.path}');
+      await binding.takeScreenshot(name);
+      debugPrint('EVIDENCE $name');
     }
 
     Future<void> tap(Finder f) async {
