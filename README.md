@@ -1,36 +1,56 @@
-# Fun Signup App
+# Nightfall Creature Registry
 
-Fun Signup App is a Flutter form demo for In-Class Activity 10b. Its simple purple layout follows the class signup example, with a lavender banner inspired by the chosen visual reference. The screen validates a name, email address, and password before showing a success SnackBar. It does not create an account or send data to a server.
+A three-screen Flutter app for Activity 11b, extended from our Activity 10 form. Guests enter the registry, complete the guest book, choose a creature companion, and reach a personalized confirmation.
 
-## Team and scope
+## Team and track
 
-- Myles Miller — undergraduate track. The local form, tip feature, and tests in this repository were prepared for his submission.
-- Eziz Bagshiyev — partner. He supplied the two reflection answers below. His implementation contribution has not been described yet.
+Myles Miller (@ozemoya) and Eziz Bagshiyev (@ezizbagshiyev). Both undergraduate. Shared build only; no graduate extension.
 
-The undergraduate scope is the core form plus Task A. There is no Task B or C extension.
+Eziz has been invited to the repository. Each member must explain a screen and submit the artifacts individually. The repository history records the actual author of each commit; no work is attributed to a teammate without evidence.
 
-## Local signup tip
+## Run
 
-The fixed category is `password_help`. Three short tips are stored directly in `lib/main.dart`. Tapping **Get a signup tip** shows a brief loading state and then the next preset tip. **Test error** simulates a local failure, and **Retry tip** recovers. The label identifies it as a preset demo tip. No network or AI model is used.
+```sh
+flutter pub get
+flutter run
+flutter analyze
+flutter test
+flutter test integration_test/registry_test.dart -d emulator-5554
+flutter build apk --release
+```
 
-The tip method never reads the name, email, or password controllers. Form validators still decide whether the demo signup passes; the tips cannot approve a form. This keeps personal input out of the tip feature.
+## Screens and navigation
 
-## Widget tree and test sketch
+`lib/main.dart` supplies the app theme and WelcomeScreen. Each screen has its own file in `lib/screens/`.
 
-`MyApp → MaterialApp → SignupPage → Scaffold → SingleChildScrollView → Form → TextFormField` describes the main form branch. `SignupPage` is stateful because it owns controllers and the tip loading and error state. `MyApp` is stateless because it only supplies the theme and home screen. Controllers are disposed when the page is removed.
+Welcome uses `Navigator.push` to open SignupScreen. The guest can press Back to leave the form. After the form validates, `_submit` waits two seconds and uses `pushReplacement` to replace SignupScreen with SuccessScreen. Only the name and creature type go into the SuccessScreen constructor. Back from success returns to the foyer, not to a completed form. The explicit Back to the Foyer button uses `popUntil`.
 
-Run `flutter analyze` and `flutter test` from this folder. The widget tests cover empty fields, malformed email, short password, valid demo submission, tip loading, tip result, local failure, and retry. For a manual check, run the app on an Android emulator, try the invalid and valid inputs, then turn off networking and repeat the tip flow.
+## State and lifecycle
 
-## Myles reflection
+SignupScreen owns the name, email, password and date controllers, the password visibility flag, birth date, creature choice, and loading flags. Changing orientation rebuilds the layout without removing that State. Popping the route disposes its four text controllers; a newly opened form starts empty. SuccessScreen owns and disposes its ConfettiController. After the delayed submit or tip request, a mounted check prevents a callback from using a disposed screen.
 
-**Question 1 — Trace the local tip feature.** Tapping the tip button sets `_isLoading` to true, so the card shows a progress indicator. After the local delay, the page chooses one preset string and rebuilds with that text. The Test error action shows an error message; Retry tip calls `_getTip` again and returns to a tip.
+The birth date ranges from January 1, 1920 through the device's current date. No age restriction is imposed. The original Activity 10 validation is retained: nonblank name and email, an @ in the email, and a password at least six characters long. This is a classroom form demo, not a production account service. Nothing is saved or sent to a server.
 
-**Question 3 — Category and privacy.** The category is always `password_help`. The tip selector ignores the name, email, and password fields, so a tip never includes personal form data or changes validation. That also makes the behavior predictable while the device is offline.
+## Design
 
-## Eziz reflection
+The reference-inspired layout uses warm cream backgrounds, black pill buttons, Anton headings and Barlow Condensed body text. A red guest-book card and an original code-drawn ghost, bat and cat collage carry the creature theme through the flow. The confirmation presents the guest and companion in a roster-style layout. Content scrolls on smaller screens. Password visibility has accessible labels; reduced-motion preferences suppress the animated title and confetti. The Activity 10 password helper remains a local preset feature and never reads form input.
 
-**Question 2 — Why validation stays local.** Local validation is fast, reliable, and consistent. AI could give inconsistent results if it were allowed to approve signup. For example, it might accept a five-character password even though the form requires six characters.
+Bundled fonts are from Google Fonts and licensed under the SIL Open Font License; license files are in assets/fonts/.
 
-**Question 4 — Test that changed the implementation.** The simulated error test broke the tip flow. That led to an error message and a Retry tip button, so a failed tip does not stop the form from working.
+## Test evidence
 
-Eziz's implementation contribution has not been provided, so it is not attributed here.
+The widget suite covers empty fields, malformed email, short password, both visibility states, each of the five creatures, loading and navigation, state retention on resize, leaving mid-load, and five date boundaries. The Android integration test additionally captures screenshots and verifies actual orientation changes and date-input behavior. See `docs/` and the Word document for recorded results.
+
+## Bug notes
+
+The first success-screen test timed out because it waited for all animation to settle while confetti was active. Widget tests now use the platform's reduced-motion flag, while the Android integration test checks the animated app normally.
+
+The first mid-load exit test advanced its fake clock past the delay before completing the reverse route transition. It was corrected to pump the route transition first, then advance the delay. The test now checks the disposed-screen path rather than accidentally allowing the pending navigation to win.
+
+## Submission
+
+Repository: https://github.com/ozemoya/incl11
+
+Submit the release APK, Ghost Hunt Word document and repository URL together. Each member also needs their own live explanation and individual upload. Do not submit a ZIP in place of these artifacts.
+
+A UI issue found during the emulator run was stale validation messages after correcting the fields. The form now starts revalidating edits after the first submit attempt, so old errors clear as the guest corrects them.

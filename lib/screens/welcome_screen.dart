@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
+import '../creature_art.dart';
 import 'signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -8,96 +9,93 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const titleStyle = TextStyle(
+      fontFamily: 'Anton',
+      fontSize: 48,
+      color: Colors.black,
+      letterSpacing: .5,
+    );
     return Scaffold(
       body: Container(
-        width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF37234E), Color(0xFF15101E)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFEDE5D8), Color(0xFFFFFFFF)],
           ),
         ),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(28),
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 26),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 440),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Text(
-                      'NIGHTFALL / CREATURE REGISTRY',
-                      style: TextStyle(
-                        color: Color(0xFFE6C8FF),
-                        letterSpacing: 2,
-                        fontSize: 12,
+                      'THE CREATURE REGISTRY',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12, letterSpacing: 2.5),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      height: 78,
+                      child: Center(
+                        child: MediaQuery.of(context).disableAnimations
+                            ? const Text('Nightfall', style: titleStyle)
+                            : AnimatedTextKit(
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                    'Nightfall',
+                                    textStyle: titleStyle,
+                                    speed: const Duration(milliseconds: 100),
+                                  ),
+                                ],
+                                totalRepeatCount: 1,
+                                displayFullTextOnTap: true,
+                              ),
                       ),
                     ),
-                    const SizedBox(height: 44),
-                    const Icon(
-                      Icons.nightlight_round,
-                      size: 100,
-                      color: Color(0xFFFFB36B),
-                    ),
-                    const SizedBox(height: 32),
-                    SizedBox(
-                      height: 150,
-                      child: MediaQuery.of(context).disableAnimations
-                          ? const Text(
-                              'A place for every creature.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 42,
-                                height: 1.1,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            )
-                          : AnimatedTextKit(
-                              animatedTexts: [
-                                TypewriterAnimatedText(
-                                  'A place for every creature.',
-                                  textStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 42,
-                                    height: 1.1,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                  speed: const Duration(milliseconds: 65),
-                                ),
-                              ],
-                              totalRepeatCount: 1,
-                              displayFullTextOnTap: true,
-                            ),
-                    ),
+                    const CreatureCollage(height: 250),
                     const SizedBox(height: 20),
                     const Text(
-                      'Ghosts, night owls, and new companions welcome. Add your name to the guest book.',
+                      'Good company.\nStrange creatures.',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFFD4C8DE),
-                        fontSize: 17,
-                        height: 1.5,
+                        fontFamily: 'Anton',
+                        fontSize: 25,
+                        height: 1.3,
                       ),
                     ),
-                    const SizedBox(height: 36),
-                    FilledButton.icon(
+                    const SizedBox(height: 14),
+                    const Text(
+                      'Find your familiar, sign the guest book,\nand join a night worth remembering.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 21,
+                        color: Color(0xFF6A665F),
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    FilledButton(
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute<void>(
                           builder: (_) => const SignupScreen(),
                         ),
                       ),
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text('Enter the Registry'),
+                      child: const Text('Enter the Registry'),
                     ),
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 22),
                     const Text(
-                      '01  FOYER     /     02  GUEST BOOK     /     03  BALLROOM',
+                      'GHOSTS  /  BATS  /  BLACK CATS  /  SPIRITS  /  WITCHES',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFFBCABC9),
                         fontSize: 10,
                         letterSpacing: 1,
+                        color: Color(0xFF77716A),
                       ),
                     ),
                   ],

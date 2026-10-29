@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'success_screen.dart';
+import '../creature_art.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -28,6 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool _obscurePassword = true;
   bool _submitting = false;
+  bool _triedSubmit = false;
   String? _selectedCreatureType;
   DateTime? _birthDate;
   final _dateController = TextEditingController();
@@ -47,7 +49,9 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _submit() async {
-    if (_submitting || !_formKey.currentState!.validate()) return;
+    if (_submitting) return;
+    setState(() => _triedSubmit = true);
+    if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     final userName = _nameController.text.trim();
     final creatureType = _selectedCreatureType!;
@@ -100,8 +104,8 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('The guest book'),
-        backgroundColor: const Color(0xFF37234E),
-        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFFF5F0E8),
+        foregroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -110,41 +114,50 @@ class _SignupScreenState extends State<SignupScreen> {
             constraints: const BoxConstraints(maxWidth: 480),
             child: Form(
               key: _formKey,
+              autovalidateMode: _triedSubmit
+                  ? AutovalidateMode.onUserInteraction
+                  : AutovalidateMode.disabled,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFDDD0F8),
-                      borderRadius: BorderRadius.circular(24),
+                      color: const Color(0xFFED4C39),
+                      borderRadius: BorderRadius.circular(28),
                     ),
                     child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.auto_awesome,
-                          color: Colors.purple,
-                          size: 30,
+                        Chip(
+                          label: Text(
+                            'GUEST BOOK',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                          backgroundColor: Colors.black,
+                          side: BorderSide.none,
                         ),
                         SizedBox(height: 12),
                         Text(
-                          'Meet your midnight companion.',
+                          'Find your familiar.',
                           style: TextStyle(
-                            color: Color(0xFF32185F),
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Anton',
+                            fontSize: 32,
+                            color: Colors.white,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Text('02 / Add yourself to the Nightfall guest list.'),
+                        Text(
+                          'Five creatures. One unforgettable night.',
+                          style: TextStyle(fontSize: 19, color: Colors.white),
+                        ),
+                        CreatureCollage(height: 120),
                       ],
                     ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Register a creature',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    'Your details',
+                    style: TextStyle(fontFamily: 'Anton', fontSize: 25),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -271,7 +284,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ElevatedButton(
                     onPressed: _submitting ? null : _submit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF37234E),
+                      backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 40,
@@ -286,12 +299,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           )
                         : const Text(
                             'Register Creature',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontFamily: 'Anton', fontSize: 18),
                           ),
                   ),
                   const SizedBox(height: 24),
                   Card(
-                    color: const Color(0xFFE4D7FB),
+                    color: const Color(0xFFEAE2D5),
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
