@@ -102,7 +102,6 @@ p=doc.add_paragraph(); p.alignment=1
 p.add_run().add_picture(str(root/'docs/nightfall-welcome.png'),width=Inches(1.5)); p.add_run('      ')
 p.add_run().add_picture(str(root/'docs/nightfall-success.png'),width=Inches(1.5))
 caption('The entry screen and personalized ballroom, captured from the running Android app. The form is replaced on success, so the previous guest book cannot be resubmitted with Back.')
-doc.add_paragraph('Each member must explain a screen during the class demonstration and upload the required artifacts individually.')
 for style in doc.styles:
  if style.element.pPr is not None:
   for border in list(style.element.pPr.findall(qn('w:pBdr'))): style.element.pPr.remove(border)
